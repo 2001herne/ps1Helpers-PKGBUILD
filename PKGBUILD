@@ -1,42 +1,33 @@
 # Maintainer: Benjamin Herne <2001herne@gmail.com>
 
-pkgname=ps1Helpers-git
-pkgver=r2.093513b
+pkgname=ps1Helpers
+pkgver=0.1.0
 pkgrel=1
 pkgdesc=""
 arch=('any')
-url=""
-license=('GPL')
+url="https://github.com/2001herne/ps1Helpers"
+license=('APACHE')
 groups=()
-depends=()
-makedepends=('git') # 'bzr', 'git', 'mercurial' or 'subversion'
-provides=("${pkgname%-git}")
-conflicts=("${pkgname%-git}")
+depends=('libgit2')
+makedepends=('git'
+             'cmake')
+provides=("${pkgname%}")
+conflicts=("${pkgname%}")
 replaces=()
 backup=()
 options=()
 install=
-source=('git+ssh://git@github.com/2001herne/ps1Helpers.git')
+source=("ps1Helpers-$pkgver.tar.gz::https://github.com/2001herne/ps1Helpers/archive/$pkgver.tar.gz")
 noextract=()
-md5sums=('SKIP')
-
-# Please refer to the 'USING VCS SOURCES' section of the PKGBUILD man page for
-# a description of each element in the source array.
-
-pkgver() {
-	cd "$srcdir/${pkgname%-git}"
-
-# Git, no tags available
-	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
-}
+md5sums=('fc1e1154ae96dacb79590a44a27662e2')
 
 build() {
-	cd "$srcdir/${pkgname%-git}"
+	cd "$srcdir/${pkgname%}-$pkgver"
     cmake -D CMAKE_BUILD_TYPE=Release .
     make
 }
 
 package() {
-	cd "$srcdir/${pkgname%-git}"
+	cd "$srcdir/${pkgname%}-$pkgver"
     make DESTDIR=${pkgdir} install
 }
